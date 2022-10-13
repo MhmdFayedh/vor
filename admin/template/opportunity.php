@@ -79,6 +79,30 @@
                 <textarea name="volunteers-roles" id="volunteers-roles" cols="10" rows="10" disabled><?php echo $opportRequest['volunteers_roles'] ?></textarea>
             </div>
 
+        <!-- Acceptance and Rejection Form-->
+        <div class="acceptance-rejection inp14">
+                <div class="status-select">
+                    <label for="status">رفض\قبول الطلب <small class="warring-msg">*</small> </label>
+                    <select name="status" id="status">
+                        <option value="accepted">قبول</option>
+                        <option value="rejected">رفض</option>
+                    </select>
+                    <div>
+                        <small class="warring-msg"><?php echo $status_error ?></small>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="reason">سبب الرفض\القبول؟ <small class="warring-msg">*</small></label>
+                    <textarea name="reason" id="reason" cols="30" rows="10"></textarea>
+                    <div>
+                        <small class="warring-msg"><?php echo $reason_error ?></small>
+                    </div>
+                </div>
+                <div>
+                    <button class="custom-btn" type="submit" name="submit">رفع حالة الطلب</button>
+                </div>
+            </div>
         </form>
     </div>
 </main>

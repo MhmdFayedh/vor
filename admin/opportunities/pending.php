@@ -59,36 +59,53 @@ else:
     if(isset($_GET['id'])):
         $opportQuery = "SELECT * FROM volunteer_opportunities WHERE id = ".$_GET['id']." limit 1";
         $opportRequest = $dbConn->query($opportQuery)->fetch_array(MYSQLI_ASSOC);
-        require_once '../template/opportunity-details.php';
+
+        $status_error = $reason_error = '';  
+        require_once '../template/opportunity.php';
+        
+        
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $status =  mysqli_real_escape_string($dbConn,$_POST['status']);
-            $reason =  mysqli_real_escape_string($dbConn,$_POST['reason']);
-
-            if(empty($status)){ $status_error = "يجب وضع حالة الطلب رفض او قبول";}
-            if(empty($reason)){ $reason_error = "يجب وضع سبب الرفض";}
-
-            $updateStmt = "UPDATE `volunteer_opportunities` set status = '".$status."' , reason = '".$reason."' WHERE id = ".$_GET['id'];
-            $reqStmt = $dbConn->query($updateStmt);
-
-
+            $status =  mysqli_real_escape_string($dbConn, $_POST['status']);
+            $reason =  mysqli_real_escape_string($dbConn, $_POST['reason']);
             $message =  $opportRequest['opportunity_name'];
             $user_id = $opportRequest['user_id'];
-            if($reqStmt){
-                if($status == 'accepted'){
-                    $message .= " تم قبول الفرصة التطوعية";
-                    $dbConn->query("INSERT INTO `notification` (`message`, `nfor`, `user_id`, `ntime` ) VALUES ('$message', 'supervisor', '$user_id', current_timestamp());");
-                    $_SESSION['msg'] = 'تم تحديث حالة الفرصة وقبولها';
-                }elseif($status == 'rejected'){
-                    $message .= " تم رفض الفرصة التطوعية";
-                    $dbConn->query("INSERT INTO `notification` (`message`, `nfor`, `user_id`, `ntime` ) VALUES ('$message', 'supervisor', '$user_id' , current_timestamp());");
-                    $_SESSION['msg'] = 'تم تحديث حالة الفرصة ورفضها';
-                }
-                echo "<script>location.href = 'index.php'</script>";
-                die();
-            }else {
-                echo 'wrong';
+
+            
+            if(empty($status)){
+                $_SESSION['error-msg'] = "يجب وضع حالة الطلب رفض او قبول";
+                $status_error = "يجب وضع حالة الطلب رفض او قبول";
+                
             }
+            if(empty($reason)){
+                $_SESSION['error-msg'] = "يجب وضع سبب الرفض";
+                $reason_error = "يجب وضع سبب الرفض";
+            }
+            $updateStmt = "UPDATE `volunteer_opportunities` set status = '".$status."' , reason = '".$reason."' WHERE id = ".$_GET['id'];
+            if(!$status_error && !$reason_error){
+                
+                $reqStmt = $dbConn->query($updateStmt);
+                if($reqStmt){
+                    if($status == 'accepted'){
+                        $message .= " تم قبول الفرصة التطوعية";
+                        $dbConn->query("INSERT INTO `notification` (`message`, `nfor`, `user_id`, `ntime` ) VALUES ('$message', 'supervisor', '$user_id', current_timestamp());");
+                        $_SESSION['msg'] = 'تم تحديث حالة الفرصة وقبولها';
+                    }elseif($status == 'rejected'){
+                        $message .= " تم رفض الفرصة التطوعية";
+                        $dbConn->query("INSERT INTO `notification` (`message`, `nfor`, `user_id`, `ntime` ) VALUES ('$message', 'supervisor', '$user_id' , current_timestamp());");
+                        $_SESSION['msg'] = 'تم تحديث حالة الفرصة ورفضها';
+                    }
+                    echo "<script>location.href = 'index.php'</script>";
+                    die();
+                }else {
+                    $_SESSION['error-msg'] = 'حدث خطأ';
+                    echo $reason_error;
+                }
+            }
+            
+
+           
+
         }
     endif;
 endif;

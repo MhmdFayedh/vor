@@ -39,12 +39,15 @@ if(!isset($_GET["id"]) && !isset($_GET["volunteers"]) && !isset($_GET['addVolunt
 
                         $startDate = strtotime($oppotunity['start_date']);
                         $endDate = strtotime($oppotunity["end_date"]);
-
+                        $user_id = $oppotunity['user_id'];
+                        $message = 'أنتهت الفرصة التطوعية '.$oppotunity['opportunity_name'];
 
                         if(date('l jS \of F Y') == date('l jS \of F Y',$endDate)){
                             $destoryNotActiveQ = "UPDATE `volunteer_opportunities` SET `status` = 'done' WHERE id = ".$oppotunity['id'];
                             $dbConn->query($destoryNotActiveQ);
+                            $dbConn->query("INSERT INTO `notification` (`message`, `nfor`, `user_id`, `ntime` ) VALUES ('$message', 'admin', '$user_id', current_timestamp())");
                         }
+                        
                         ?>
                     <tr>
                         <td class="info"><?php echo $oppotunity['id']?></td>

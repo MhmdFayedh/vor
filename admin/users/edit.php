@@ -32,39 +32,26 @@ $username_error = $password_error = $name_error = $role_error = $phone_error = '
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     // When Post it to update user data {Prepare Stmt}
-    $editStmt = $dbConn->prepare('UPDATE users SET username = ?, password = ?, name = ?, phone = ?, role = ? WHERE id = ?');
+    $editStmt = $dbConn->prepare('UPDATE users SET `username` = ?, `password` = ?, `name` = ?, `phone` = ?, `role` = ? WHERE `id` = ?');
     $editStmt->bind_param('sssssi', $bindUsername, $bindPassword, $bindName, $bindPhone, $bindRole, $bindId);
 
     // Binding + cehck if there is post[password] if yes hash it
     $bindUsername = $methods->usernameFilter($_POST['username']) ;
     $_POST['user-paswd'] ? $bindPassword = password_hash($methods->passwordFilter($_POST['user-paswd']), PASSWORD_DEFAULT) : $bindPassword = $user['password'];
     $bindName = $_POST['name'];
-    $bindPhone = $methods->numFilter($_POST['phone']); 
+    $bindPhone = $methods->numFilter($_POST['phone']);
     $bindRole = $_POST['role'];
     $bindId = $_GET['id'];
-    
-    if(!$bindUsername):
-        $username_error = "حقل أسم المستخدم فارغ او لا يتوافق مع مواصفات أسم المستخدم";
-    endif;
-
-    if(!$bindPassword):
-        $password_error = "حقل الرمز السري فارغ او لا يتوافق مع مواصقات الرمز السري";
-    endif;
 
 
 
-    if(!$bindPhone):
-        $phone_error = "حقل الهاتف فارغ او لا يتوافق مع مواصفات الارقام";
-    endif;
-
-    $editStmt->execute();
-
-    if($editStmt->error):
-        echo $editStmt->error;
-    else:
-        header('Location: index.php');
+    if(!$bindUsername  == false && !$bindPhone == false):
+        $editStmt->execute();
         $_SESSION['msg'] = 'تم تعديل المستخدم';
+        header('Location: index.php');
         die();
+    else:
+        $_SESSION['error-msg'] = "حدث خطأ";
     endif;
 }
 ?>

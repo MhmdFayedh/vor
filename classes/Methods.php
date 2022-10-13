@@ -13,7 +13,7 @@ class Methods {
 
     // To make sure it's rigth number
     public function numFilter($field){
-        $field = filter_var(trim($field), FILTER_SANITIZE_NUMBER_INT);
+        $field = filter_var($field, FILTER_SANITIZE_NUMBER_INT);
 
         if(preg_match("/^[0][5]{1}[0-9]{8}$/", $field)){
             return $field;

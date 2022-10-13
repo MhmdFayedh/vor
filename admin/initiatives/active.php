@@ -40,12 +40,21 @@ if(!isset($_GET["id"]) && !isset($_GET["volunteers"]) && !isset($_GET['addVolunt
                                 endforeach;
 
                                 $startDate = strtotime($initiative['start_date']);
-                                $endtDate = strtotime($initiative["end_date"]);
+                                $endDate = strtotime($initiative["end_date"]);
+                                $user_id = $initiative['user_id'];
+                                $message = "أنتهت المبادرة ".$initiative['initiative_name'];
+                                if(date('l jS \of F Y') == date('l jS \of F Y',$endDate)){
+                                    $destoryNotActiveQ = "UPDATE `volunteer_opportunities` SET `status` = 'done' WHERE id = ".$oppotunity['id'];
+                                    $dbConn->query($destoryNotActiveQ);
+                                    $dbConn->query("INSERT INTO `notification` (`message`, `nfor`, `user_id`, `ntime` ) VALUES ('$message', 'admin', '$user_id', current_timestamp())");
+
+                                }
+
                             ?></td>
                             <td class="info"><?php echo $initiative['facility_name'] ?></td>
                             <td class="info"><?php echo $initiative['initiative_name'] ?></td>
                             <td class="info"><?php echo date('l jS \of F Y', $startDate) ?></td>
-                            <td class="info"><?php echo date('l jS \of F Y', $endtDate )?></td>
+                            <td class="info"><?php echo date('l jS \of F Y', $endDate )?></td>
                             <td>
                                 <a href="?id=<?php echo $initiative['id'] ?>" class="details-btn">التفاصيل</a>
                             </td>
@@ -67,7 +76,7 @@ else:
     if(isset($_GET['id'])):
         $initQuery = "SELECT * FROM voluntary_initiatives WHERE id =".$_GET['id']." limit 1";
         $initiRequest = $dbConn->query($initQuery)->fetch_array(MYSQLI_ASSOC);
-        require_once '../template/initiatives.php';
+        require_once '../template/initiative-details.php';
     endif;
 
 

@@ -16,8 +16,8 @@ $time = isset($notify['ntime'])? $notify['ntime']: "No Record ";
             </tr>
         </thead>
                 <tr>
-                    <td><?php echo  $notify['message']?></td>
-                    <td><?php echo $notify['ntime']?></td>
+                    <td class="info"><?php echo  $message?></td>
+                    <td class="info"><?php echo $time?></td>
                 </tr>
     </tbody>
 

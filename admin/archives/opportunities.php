@@ -20,17 +20,22 @@ if(!isset($_GET["volunteers"])):
     <tbody>
     <?php foreach($opps as $opp):?>
         <tr>
-        <td><?php echo $opp['id'] ?></td>
-                        <td><?php echo $opp['opportunity_name'] ?></td>
-                        <td><?php echo $opp['facility_name'] ?></td>
+        <td class="info"><?php echo $opp['id'] ?></td>
+                        <td class="info"><?php echo $opp['opportunity_name'] ?></td>
+                        <td class="info"><?php echo $opp['facility_name'] ?></td>
                         <td>
                             <?php if($opp['status'] == 'accepted'):?>
-                                <span class='status-btn accepted-btn' >مقبول</span>
+                                <span class='status-btn accepted-btn' >مقبولة</span>
                             <?php endif;?>
 
                             <?php if($opp['status'] == 'rejected'):?>
-                                <span class='status-btn rejected-btn' >مرفوض</span>
+                                <span class='status-btn rejected-btn' >مرفوضة</span>
                             <?php endif;?>
+
+                            <?php if($opp['status'] == 'done'):?>
+                                <span class='status-btn done-btn' >منتهية</span>
+                            <?php endif;?>
+                            
                         </td>
                         <td>
                             <?php if($opp['status'] == 'accepted'): ?>

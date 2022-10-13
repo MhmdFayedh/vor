@@ -58,7 +58,7 @@ else:
     if(isset($_GET['id'])):
         $initQuery = "SELECT * FROM voluntary_initiatives WHERE id =".$_GET['id']." limit 1";
         $initiRequest = $dbConn->query($initQuery)->fetch_array(MYSQLI_ASSOC);
-        require_once '../template/initiatives.php';
+        require_once '../template/initiative.php';
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $status =  mysqli_real_escape_string($dbConn,$_POST['status']);

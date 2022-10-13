@@ -45,7 +45,7 @@ if($_SERVER["REQUEST_METHOD"] == 'POST'){
     endfor;
     if($addStmt):
         $dbConn->query("UPDATE voluntary_initiatives SET `isAdded` = '1' WHERE id = ".$_GET['id']);
-         $dbConn->query("INSERT INTO `notification` (`message`, `nfor`, `user_id`, `ntime` ) VALUES ('$message', 'admin', '$user_id', current_timestamp())");
+        $dbConn->query("INSERT INTO `notification` (`message`, `nfor`, `user_id`, `ntime` ) VALUES ('$message', 'admin', '$user_id', current_timestamp())");
         $_SESSION['msg'] = 'نم رفع الاسماء بنجاح';
         header("location: index.php");
         die();
