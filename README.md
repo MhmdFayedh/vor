@@ -1,6 +1,6 @@
 # Volunteering Opportunities Requests 
 
-I create a system (web application) for **Hail Health Volunteering** processes that can reduce the time that can reduse time for the deparment.
+I create a system (web application) for **Hail Health Volunteering** processes that can reduce the time that can reduse time for the department.
 
 ---
 
